@@ -29,7 +29,7 @@ end
 
 function ESP(part, name, color, Type)
 
-	repeat task.wait() until part.Parent:FindFirstChild('HumanoidRootPart') and Player.Character:FindFirstChild('HumanoidRootPart')
+	repeat wait() until part.Parent:FindFirstChild('HumanoidRootPart') and Player.Character:FindFirstChild('HumanoidRootPart')
 
 	local distanceText = Drawing.new("Text");
 	distanceText.Text = name;
@@ -103,8 +103,17 @@ function ESP(part, name, color, Type)
 	end)
 end
 
-local sUI = Instance.new('ScreenGui', game.CoreGui);
-sUI.Name = 'PgMrMyRORt';
+local sUI = Instance.new('ScreenGui');
+
+pcall(function()
+	if gethui then
+		sUI.Parent = gethui();
+		sUI.Name = 'PgMrMyRORt';
+	else
+		sUI.Parent = game:GetService('CoreGui');
+		sUI.Name = 'PgMrMyRORt';
+	end
+end)
 
 local mainFrame = Instance.new('ImageLabel', sUI);
 mainFrame.Name = 'Main';
@@ -561,13 +570,13 @@ function Ripple(Button, X, Y)
 		Circle:TweenSizeAndPosition(UDim2.new(0, Size, 0, Size), UDim2.new(0.5, -Size/2, 0.5, -Size/2), "Out", "Quart", Time, false, nil);
 		for i=1,10 do
 			Circle.ImageTransparency = Circle.ImageTransparency + 0.01;
-			task.wait(Time/10);
+			wait(Time/10);
 		end
 		Circle:Destroy();
 	end))
 end
 
-task.spawn(function()
+spawn(function()
 	
 	for _, checkNPC in pairs(workspace.NPCs:GetDescendants()) do
 
@@ -593,24 +602,24 @@ end)
 
 
 workspace.NPCs.ChildAdded:Connect(function(newNPC)
-	task.wait(0.5);
+	wait(0.5);
 	
 	for _, checkTitle in pairs(newNPC:GetDescendants()) do
 
 		if checkTitle:IsA('StringValue') and checkTitle.Name == 'Title' and checkTitle.Value == 'Merchant' then
-			repeat task.wait() until checkTitle.Parent.Parent:FindFirstChild('HumanoidRootPart') and Player.Character:FindFirstChild('HumanoidRootPart')
+			repeat wait() until checkTitle.Parent.Parent:FindFirstChild('HumanoidRootPart') and Player.Character:FindFirstChild('HumanoidRootPart')
 			ESP(checkTitle.Parent.Parent:FindFirstChild('HumanoidRootPart'), checkTitle.Parent.Parent.Name, Color3.fromRGB(0, 255, 130), 'Merchant');
 		end
 
 		if checkTitle:IsA('StringValue') and checkTitle.Name == 'Title' and checkTitle.Value == 'Smuggler' then
-			repeat task.wait() until checkTitle.Parent.Parent:FindFirstChild('HumanoidRootPart') and Player.Character:FindFirstChild('HumanoidRootPart')
+			repeat wait() until checkTitle.Parent.Parent:FindFirstChild('HumanoidRootPart') and Player.Character:FindFirstChild('HumanoidRootPart')
 			ESP(checkTitle.Parent.Parent:FindFirstChild('HumanoidRootPart'), checkTitle.Parent.Parent.Name, Color3.fromRGB(255, 0, 0), 'Merchant');
 		end
 
 	end
 	
 	if newNPC.Name == 'The Exiled' then
-		repeat task.wait() until workspace.NPCs['The Exiled']:FindFirstChild('HumanoidRootPart') and Player.Character:FindFirstChild('HumanoidRootPart')
+		repeat wait() until workspace.NPCs['The Exiled']:FindFirstChild('HumanoidRootPart') and Player.Character:FindFirstChild('HumanoidRootPart')
 
 		notif:Play();
 
@@ -625,7 +634,7 @@ workspace.NPCs.ChildAdded:Connect(function(newNPC)
 	end
 
 	if newNPC.Name == 'Minotaur' then
-		repeat task.wait() until workspace.NPCs.Minotaur:FindFirstChild('HumanoidRootPart') and Player.Character:FindFirstChild('HumanoidRootPart')
+		repeat wait() until workspace.NPCs.Minotaur:FindFirstChild('HumanoidRootPart') and Player.Character:FindFirstChild('HumanoidRootPart')
 
 		notif:Play();
 
@@ -665,16 +674,16 @@ npcNameInput.FocusLost:Connect(function(enterPressed)
 
 		end
 
-		task.spawn(function()
+		spawn(function()
 			for i = 1, 0, -0.25 do
-				task.wait();
+				wait();
 				npcNameInput.BackgroundTransparency = i;
 			end
 		end)
 
 		itemList.Text = '';
 		items = {};
-		task.wait(0.5);
+		wait(0.5);
 
 		if workspace.NPCs:FindFirstChild(npcNameInput.Text) then
 			getItems();
@@ -770,6 +779,6 @@ checkButton.MouseButton1Click:Connect(function()
 	endNotif();
 	notifText.Text = '';
 	notif:Stop();
-	task.wait(.8);
+	wait(.8);
 	notifFrame.Visible = false;
 end)
